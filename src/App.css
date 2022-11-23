@@ -16613,13 +16613,22 @@ button.complete-purchase.disabled {
     width: 196px;
 }
 
-img{
+/* img{
   width: 200px;
-}
+} */
 .costume-block .product-pack{
   width: 165px;
 }
 .costume-box{
   display: flex;
   flex-wrap: wrap;
+}
+
+.seller-prof-img seller-proof-img{
+height: 20px;
+width: 20px;
+}
+
+.footer-box shop-row{
+  color: #0000ff;
 }

@@ -1,10 +1,21 @@
 import axios from 'axios';
-import { GETATTRIBUTEBYCATID, GETBANNER, GETBRAND, GETCATEGORY, GETPRODUCTLIST} from './endPoints';
+import { GETATTRIBUTEBYCATID, GETBANNER, GETBRAND, 
+  GETCATEGORY,
+   GETPRODUCTLIST,
+   HOMEPAGE,
+ 
 
+} from './endPoints';
+
+let token = localStorage.getItem('token')
 
 export const api = axios.create({
     baseURL: process.env.REACT_APP_BASE_URL + process.env.REACT_APP_BASE_URL_PREFIX + process.env.REACT_APP_BASE_URL_VERSION,
-})
+    headers: {
+      Authorization:  'Bearer' + " " + token
+
+  }
+  })
 
 
 
@@ -57,6 +68,10 @@ export const getAttributeByCatId=(filterData)=>{
 
 export const getProductList=(data)=>{
     return api.post(GETPRODUCTLIST,data)
+}
+
+export const getHomePageNew=(item)=>{
+  return api.get(HOMEPAGE,{item})
 }
 
 api.interceptors.request.use(

@@ -17,7 +17,7 @@ const Banner=()=>{
         var settings = {
             dots: true,
             infinite: true,
-            speed: 2000,
+            speed: 800,
             slidesToShow: 1,
             slidesToScroll: 1
           };

@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { getBrandsAction } from "../Store/Action";
+import Slider from "react-slick";
 
 const NewBrands = () => {
   const dispatch = useDispatch();
@@ -13,6 +14,14 @@ const NewBrands = () => {
   if (brandsLoading) {
     return <div>Brand loading....</div>;
   }
+
+  var settings = {
+    dots: true,
+    infinite: true,
+    speed: 200,
+    slidesToShow: 4,
+    slidesToScroll: 1
+  };
 
   return (
     <>
@@ -26,6 +35,7 @@ const NewBrands = () => {
             <div className="slick-slider slick-initialized">
               <div className="slick-list">
                  <div>
+                 <Slider {...settings}>
                   {brands?.map((item, index) => {
                     return (
                       <div key={index}>
@@ -36,12 +46,13 @@ const NewBrands = () => {
                           >
                             <img src={item.brandlogo} alt="trend-img" />
                           </a>
-                          {/* <strong></strong> */}
+                        
                         </div>
                         <Link to={`/${item.slug}`}>{item.name}</Link>
                       </div>
                     );
                   })}
+                  </Slider>
                 </div>
               </div>
             </div>

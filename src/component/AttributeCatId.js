@@ -1,27 +1,25 @@
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router";
+import { Link } from "react-router-dom";
 import {
   getAttributeByCatIdAction,
   getProductListAction,
 } from "../Store/Action";
+import Input from "./Input";
 
 const AttributeCatId = () => {
 
   const [brands,setBrands]=useState();
   const [condition,setCondition]=useState();
   const[delivery,setDelivery]=useState();
-  const [color,setColor]=useState();
   const[sortedData,setSortedData]=useState(
     {
       brand:[],
       category:[],
       condition:[],
       delivery:[],
-      product_data:{
-        color: [],
-        size:[]
-      }
+    
     }
   );
 
@@ -41,7 +39,9 @@ const AttributeCatId = () => {
   const productloading = useSelector((state) => state.productlist?.loading);
 
   useEffect(() => {
+if(sortedData.category.length){
     getProductListAction(dispatch, sortedData);
+}
   }, [sortedData]);
 
    useEffect(()=>{
@@ -57,7 +57,7 @@ const AttributeCatId = () => {
     if(filterData){
       getAttributeByCatIdAction(dispatch, filterData);
     }
-  }, [filterData]);
+  }, [filterData,productlist]);
 
   useEffect(()=>{
     setBrands(datalist?.brand);
@@ -71,9 +71,7 @@ const AttributeCatId = () => {
     setDelivery(datalist?.delivery);
   },[datalist])
 
-  useEffect(()=>{
-    setColor(datalist?.color)
-  })
+
 
   if (!attributeLoading) {
     return <div>Category loading....</div>;
@@ -92,9 +90,11 @@ if(newarr.includes(e)){
   setSortedData({...sortedData,brand:newarr})
   
 }else{
+ 
   newarr.push(e)
   setSortedData({...sortedData,brand:newarr});
 }
+ 
 }
 const handleCondition =(e)=>{
   var newarr1=sortedData.condition;
@@ -108,6 +108,7 @@ if(newarr1.includes(e)){
   newarr1.push(e)
   setSortedData({...sortedData,condition:newarr1});
 }
+
 }
 
 const handleDelivery =(e)=>{
@@ -123,31 +124,31 @@ if(newarr2.includes(e)){
   setSortedData({...sortedData,delivery:newarr2});
 }
 }
-// console.log(productlist);
-// console.log(productlist.data[0].Attrs[0].value);
 
   return (
     <>
+
 <div className="brand-attr-block cat-box">
-<button className="accordian-header fal fa-angle-right active"> brand </button>
-  <div className="accordian-panel expanded">
-    <ul>
-      <div className="brand-list brand-listing">
-        <div className="scrollarea " >
-          <div className="scrollarea-content ">
-   {brands?.map((val,index)=>{
-    return (
-      <div key={index}>
-<li><input type="checkbox" onChange={()=>handleBrand(val._id)} /><label className="brand-list-name">{val.name}</label></li>
-      </div>
-    )
-   })}
+  <button className="accordian-header fal fa-angle-right active"> brand </button>
+    <div className="accordian-panel expanded">
+      <ul>
+        <div className="brand-list brand-listing">
+          <div className="scrollarea " >
+            <div className="scrollarea-content ">
+     {brands?.map((val,index)=>{
+      return (
+       <div key={index}>
+          <Input handleprops={handleBrand} name={val.name} Id={val._id}/>
+        </div>
+      )
+     })}
+            </div>
           </div>
         </div>
-      </div>
-    </ul>
+      </ul>
+    </div>
   </div>
-</div>
+
 
 
 <div className="condition-attr-block cat-box"><button className="accordian-header fal fa-angle-right active">condition</button>
@@ -155,11 +156,11 @@ if(newarr2.includes(e)){
     <ul>
       <div className="brand-list brand-listing">
         <div className="scrollarea " >
-          <div className="scrollarea-content " tabindex="1" >
+          <div className="scrollarea-content " tabIndex="1" >
           {condition?.map((val,index)=>{
     return (
       <div key={index}>
-<li><input type="checkbox" onChange={()=>handleCondition(val.name)}/><label className="brand-list-name">{val.name}</label></li>
+<Input handleprops={handleCondition} name={val.name} Id={val.name}/>
       </div>
     )
    })}      
@@ -178,30 +179,13 @@ if(newarr2.includes(e)){
 {delivery?.map((val,index)=>{
   return(
     <div key={index}>
-    <label className="price-lable">
-    <span><input name="priceOptions" type="radio" onChange={()=>handleDelivery(val.name)}/></span>
-    <div className="price-input">{val.name}</div>
-  </label>
+   <Input handleprops={handleDelivery} name={val.name} Id={val.name}/>
   </div>
   )
 })}
     </div>
      </div>
 
-
-
-     <div className="color-attr-block cat-box"><button className="accordian-header fal fa-angle-right active">color</button>
-  <div className="accordian-panel expanded">
-    {color?.map((val,index)=>{
-      return(
-        <ul>
-        <li><input type="checkbox"/><label></label></li>
-      </ul>
-      )
-    })}
-  </div>
-</div>
-   
       <div className="plp-header product-listhead null">
         <div>
           <div className="breadcrumb-wrap"></div>
@@ -220,7 +204,7 @@ if(newarr2.includes(e)){
           {datalist?.attr_name.length>0 && datalist?.attr_name?.map((item,index)=>{
             return(
               <div key={index}>
-             {/* <div>{item}</div> */}
+            
 
               </div>
             )
@@ -263,14 +247,18 @@ if(newarr2.includes(e)){
       return (
         <div key={index1}>
   
-  <div className="costume-block"><a className="" href="/product/Home/62fdf9d37bff2f10164dac6b/?cat=home"></a>
-    <div className="costume-action"><span className="wish"><i className="icon-wishlist "></i></span></div><a className="product-pack"
-      href="/product/Home/62fdf9d37bff2f10164dac6b/?cat=home">
+  <div className="costume-block">
+  <Link to={`/product/${item.categoryData.slug}/${item._id}`}>
+
+    <div className="costume-action"><span className="wish"><i className="icon-wishlist "></i></span></div>
+    <Link to={`/product/${item.categoryData.slug}/${item._id}`}>
       <div className="costumes">
         <img src={item.default_image} alt="trend-img" />
           </div>
-    </a>
-  </div><a href="/product/Home/62fdf9d37bff2f10164dac6b/?cat=home">
+    </Link>
+    </Link>
+  </div>
+  <Link to={`/product/${item.categoryData.slug}/${item._id}`}>
     <div className="costume-info my-list my-list-wrap">
       <div className="product-name"><strong className="prod-name"></strong>
         <div className="free-ship-wrap"></div>
@@ -281,7 +269,7 @@ if(newarr2.includes(e)){
         <span className="buy-info">{item.Price.sell_price.$numberDecimal} </span><span className="old-price"> {item.Price.current_store_price.$numberDecimal}</span></div><span
         className="discount">1% OFF</span></p>
     </div>
-  </a>
+  </Link> 
   </div>
   );
 }):<div>No</div>}

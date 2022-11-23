@@ -18,13 +18,6 @@ const categoryLoading = useSelector((state) => state.category?.loading);
         return <div>Category loading....</div>
     }
 
-    
-
-        
-
- 
-
-
 
 return(
 <>
@@ -38,6 +31,7 @@ return(
                 <li className="sublist-menu brand-sub-menu "><span>Brands</span>
                     <ul className="sub-menu "></ul>
                     <div className="arrow-outer-wrap">
+                        
                         <div className="arrow-wrap"></div>
                             {products?.map((val,index)=>{
                                return( 
