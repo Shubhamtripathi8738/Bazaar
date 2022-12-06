@@ -111,7 +111,7 @@ const dispatch=useDispatch();
                                               <input
                                               type={'password'}
                                               {...register("password")} />
-                                              {errors.gender && (
+                                              {errors.password && (
                                                 <p>{errors.password.message}</p>
                                               )}
                                             </div>
